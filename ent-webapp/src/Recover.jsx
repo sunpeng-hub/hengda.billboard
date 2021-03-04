@@ -94,6 +94,11 @@ const Recover = () => {
   };
 
   const handleCode = () => {
+    const reg = /^[a-zA-Z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
+    if (reg.test(data.email) === false) {
+      window.alert('请检查邮箱格式是否输入正确');
+      return;
+    }
     fetch('./api/ent-user/checkRecover/', {
       method: 'PUT',
       headers: { 'content-type': 'application/json' },
@@ -142,8 +147,9 @@ const Recover = () => {
   };
 
   const checkEmail = () => {
-    const reg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
-    return reg.test(data.email);
+    if (data.email === '') {
+      return true;
+    }
   };
 
   return (
@@ -219,7 +225,7 @@ const Recover = () => {
                           className="btn btn-primary rounded-0"
                           type="button"
                           onClick={handleCode}
-                          disabled={!checkEmail()}
+                          disabled={checkEmail()}
                         >
                           发送验证码
                         </button>

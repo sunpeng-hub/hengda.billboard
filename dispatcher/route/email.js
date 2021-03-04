@@ -75,7 +75,7 @@ router
     const mailOptions = {
       from: config.email.auth.user,
       to: ctx.request.body.email,
-      subject: '学子就业网邮箱验证',
+      subject: '龙江学子就业平台邮箱验证',
       html: `您的验证码是:<br/>
       <h1>${code}</h1>
     `,

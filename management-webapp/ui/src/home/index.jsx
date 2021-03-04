@@ -122,7 +122,7 @@ function Home() {
                       </div>
                     </div>
                   </div>
-                  <div className="col">
+                  {/* <div className="col">
                     <div className="card bg-dark shadow">
                       <div className="card-body">
                         <p className="lead">推荐信息总数</p>
@@ -131,8 +131,8 @@ function Home() {
                         </h1>
                       </div>
                     </div>
-                  </div>
-                  <div className="col">
+                  </div> */}
+                  {/* <div className="col">
                     <div className="card bg-dark shadow">
                       <div className="card-body">
                         <p className="lead">每日推荐信息数</p>
@@ -141,8 +141,8 @@ function Home() {
                         </h1>
                       </div>
                     </div>
-                  </div>
-                  <div className="col">
+                  </div> */}
+                  {/* <div className="col">
                     <div className="card bg-dark shadow">
                       <div className="card-body">
                         <p className="lead">岗位总数</p>
@@ -151,8 +151,8 @@ function Home() {
                         </h1>
                       </div>
                     </div>
-                  </div>
-                  <div className="col">
+                  </div> */}
+                  {/* <div className="col">
                     <div className="card bg-dark shadow">
                       <div className="card-body">
                         <p className="lead">每日岗位数</p>
@@ -161,8 +161,8 @@ function Home() {
                         </h1>
                       </div>
                     </div>
-                  </div>
-                  <div className="col">
+                  </div> */}
+                  {/* <div className="col">
                     <div className="card bg-dark shadow">
                       <div className="card-body">
                         <p className="lead">校园招聘总数</p>
@@ -171,8 +171,8 @@ function Home() {
                         </h1>
                       </div>
                     </div>
-                  </div>
-                  <div className="col">
+                  </div> */}
+                  {/* <div className="col">
                     <div className="card bg-dark shadow">
                       <div className="card-body">
                         <p className="lead">每日校园招聘数</p>
@@ -181,7 +181,7 @@ function Home() {
                         </h1>
                       </div>
                     </div>
-                  </div>
+                  </div> */}
                 </div>
               </div>
             </div>

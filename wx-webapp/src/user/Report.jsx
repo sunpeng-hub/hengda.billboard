@@ -58,7 +58,7 @@ RecruitmentDetail.propTypes = {
 
 RecruitmentDetail.defaultProps = {
   date: undefined,
-  name: undefined,
+  name: '',
   enterprise_name: undefined,
   education: undefined,
   category: undefined,
@@ -107,6 +107,15 @@ EnterpriseDetail.propTypes = {
   address4: PropTypes.string.isRequired,
 };
 
+EnterpriseDetail.defaultProps = {
+  name: '',
+  zhuziguimo: '',
+  yuangongshuliang: '',
+  address1: '',
+  address2: '',
+  address3: '',
+  address4: '',
+};
 const Report = () => {
   const [content, setCntent] = useState('');
 

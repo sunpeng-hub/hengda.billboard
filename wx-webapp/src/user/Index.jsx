@@ -8,7 +8,7 @@ import Feedback from './Feedback';
 import JournalRouter from './journal/Index';
 import Favorite from './Favorite';
 import Delivery from './Delivery';
-import Report from './Report';
+// import Report from './Report';
 import Schedule from './Schedule';
 import Offer from './Offer';
 import SysMessage from './SysMessage';
@@ -51,9 +51,9 @@ const UserRouter = () => (
       <Route exact path="/我的/系统消息">
         <SysMessage />
       </Route>
-      <Route exact path="/我的/举报/:id/:category">
+      {/* <Route exact path="/我的/举报/:id/:category">
         <Report />
-      </Route>
+      </Route> */}
       <Route exact path="/我的/修改密码">
         <Edit />
       </Route>

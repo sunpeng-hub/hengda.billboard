@@ -57,7 +57,7 @@ export default function Detail({ component_option }) {
         education,
       };
     } else {
-      window.alert("解析数据失败。");
+      window.alert("请选择发送对象");
       return;
     }
 

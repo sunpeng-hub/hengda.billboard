@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useParams, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faComment, faBan } from '@fortawesome/free-solid-svg-icons';
+import { faStar, faComment } from '@fortawesome/free-solid-svg-icons';
 
 import moment from 'moment';
-import { Modal, Modal1 } from '../components/Modal';
+import { Modal1 } from '../components/Modal';
 import { Sidebar, ResumeView } from './Components';
 import { SearchFavorite } from './ResumeDetalis';
 import { _EditJournal, FavoriteJournal } from '../commonFetch';
@@ -22,7 +22,7 @@ const ListDetails = () => {
 
   const [modalShow1, setModalShow1] = useState(false);
 
-  const [modalShow2, setModalShow2] = useState(false);
+  // const [modalShow2, setModalShow2] = useState(false);
 
   const [entStatus, setEntStatus] = useState(false);
 
@@ -194,29 +194,29 @@ const ListDetails = () => {
       });
   };
 
-  const handleReport = () => {
-    fetch('./api/report/', {
-      method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({
-        user_id: auth.id,
-        user_uuid: auth.uuid,
-        data_uuid: data.resume_uuid,
-        data_id: data.resume_id,
-        user_category: '企业用户',
-        content: document.getElementById('report').value,
-        category: '简历',
-        datime: moment().format('YYYY-MM-DD HH:mm'),
-      }),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.content) {
-          window.alert('以提交到后台,我们将尽快处理');
-          setModalShow2(false);
-        }
-      });
-  };
+  // const handleReport = () => {
+  //   fetch('./api/report/', {
+  //     method: 'POST',
+  //     headers: { 'content-type': 'application/json' },
+  //     body: JSON.stringify({
+  //       user_id: auth.id,
+  //       user_uuid: auth.uuid,
+  //       data_uuid: data.resume_uuid,
+  //       data_id: data.resume_id,
+  //       user_category: '企业用户',
+  //       content: document.getElementById('report').value,
+  //       category: '简历',
+  //       datime: moment().format('YYYY-MM-DD HH:mm'),
+  //     }),
+  //   })
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       if (res.content) {
+  //         window.alert('以提交到后台,我们将尽快处理');
+  //         setModalShow2(false);
+  //       }
+  //     });
+  // };
 
   const Bar = () => {
     return (
@@ -242,14 +242,14 @@ const ListDetails = () => {
           <FontAwesomeIcon icon={faComment} fixedWidth />
           邀请面试
         </button>
-        <button
+        {/* <button
           className="btn btn-light rounded-0 text-danger"
           onClick={() => setModalShow2(true)}
           type="button"
         >
           <FontAwesomeIcon icon={faBan} fixedWidth />
           举报
-        </button>
+        </button> */}
       </div>
     );
   };
@@ -282,7 +282,7 @@ const ListDetails = () => {
         </div>
       </div>
 
-      <Modal
+      {/* <Modal
         title="举报"
         show={modalShow2}
         handleSave={handleReport}
@@ -292,7 +292,7 @@ const ListDetails = () => {
           <label>举报原因</label>
           <textarea id="report" className="form-control" />
         </div>
-      </Modal>
+      </Modal> */}
       <Modal1
         title="发起邀请"
         show={modalShow1}

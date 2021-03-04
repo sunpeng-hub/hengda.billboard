@@ -41,7 +41,7 @@ const User = () => {
   };
 
   const checkEmail = () => {
-    const reg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
+    const reg = /^[a-zA-Z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
     return reg.test(data.email);
   };
 
@@ -142,6 +142,7 @@ const User = () => {
             <div className="row">
               <div className="col">
                 <h3 className="pull-left">用户信息</h3>
+                <span className="text-danger">(填写完成后用户可使用手机号进行登录)</span>
               </div>
             </div>
             <hr />
@@ -149,7 +150,7 @@ const User = () => {
               <div className="col">
                 <div className="card col-6 offset-3 col-lg-4 offset-lg-4 border-0">
                   <div className="form-group">
-                    <label>电话号码</label>
+                    <label>注册者手机号</label>
                     <input
                       className="form-control rounded-0"
                       type="text"

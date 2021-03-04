@@ -61,7 +61,7 @@ const Navbar = (props) => {
   }, [props, totalFlg]);
 
   return (
-    <div className="row shadow-sm  px-5 bg-white text-center font-weight-bold">
+    <div className="row shadow-sm px-5 bg-white text-center font-weight-bold">
       <div className={`col ${category === '首页' && 'nav-bar-active'}`}>
         <a className="nav-link text-dark" href="#/">
           首页

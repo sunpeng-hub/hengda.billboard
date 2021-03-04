@@ -74,6 +74,10 @@ const List = () => {
 
   const [city, setCity] = useState('');
 
+  const [page, setPage] = useState(2);
+
+  const [flag, setFlag] = useState(true);
+
   useEffect(() => {
     document.title = '校园招聘';
     fetch('./api/campus/', {
@@ -84,14 +88,15 @@ const List = () => {
         category1: true,
         category2: true,
         keyword: '',
+        page: 1,
       }),
     })
       .then((res) => res.json())
       .then((res) => {
-        if (res.content) {
-          setList(res.content);
-        } else {
+        if (res.message) {
           alert(res.message);
+        } else {
+          setList(res.content);
         }
       });
   }, []);
@@ -107,7 +112,8 @@ const List = () => {
         if (res.content) {
           setList(res.content);
         } else {
-          alert(res.message);
+          // alert(res.message);
+          alert('暂时还没有校园招聘');
         }
       });
   };
@@ -136,6 +142,34 @@ const List = () => {
       ...types,
     });
     setCity(val);
+  };
+
+  const load = () => {
+    fetch('./api/campus/', {
+      method: 'PUT',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        city: '',
+        category1: true,
+        category2: true,
+        keyword: '',
+        page: page,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.content.length) {
+          setList(list.concat(res.content));
+          setFlag(true);
+        } else {
+          setFlag(true);
+          alert('已经到底了');
+          document.getElementById('load').innerHTML = '已经到底了';
+          document.getElementById('load').disabled = true;
+        }
+      });
+    setPage(page + 1);
+    setFlag(false);
   };
 
   return (
@@ -189,6 +223,17 @@ const List = () => {
               </div>
             </div>
             {list && list.map((item) => <RecruitRow key={item.id} {...item} />)}
+            {flag === true ? (
+              <button id="load" className="btn btn-block mx-auto" onClick={load}>
+                点击加载更多
+              </button>
+            ) : (
+              <div className="d-flex justify-content-center">
+                <div className="spinner-border text-primary" role="status">
+                  <span className="sr-only">Loading...</span>
+                </div>
+              </div>
+            )}
           </div>
         </div>
       </div>

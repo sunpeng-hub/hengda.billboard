@@ -1,15 +1,9 @@
 import React, { useEffect, useState } from 'react';
-import TextCheckbox from '../components/Button';
-import { RecruitmentRow1 } from '../components/DataRow';
-import CityDropdowns from '../components/CityDropdowns';
+import {  RecommendRow1 } from '../components/DataRow';
 import Navbar from '../components/Navbar';
 
 const KeywordSearch = () => {
-  const [types, setTypes] = useState({});
-
   const [list, setList] = useState([]);
-
-  const [city, setCity] = useState('');
 
   const [keyword, setKeyword] = useState('');
 
@@ -17,55 +11,35 @@ const KeywordSearch = () => {
     document.title = '推荐信息查询';
   }, []);
 
-  const search = (param) => {
-    fetch('./api/recruitment/keyword-search/', {
+  const search = () => {
+    fetch('./api/recommend/filter?filter=wx-default-list', {
       method: 'PUT',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify(param),
+      body: JSON.stringify({
+        category: '国企,公务员,事业单位,教师,其他',
+        address_level2: '',
+        keyword: keyword,
+        page: 1,
+      }),
     })
       .then((res) => res.json())
       .then((res) => {
-        if (res.content) {
-          setList(res.content);
-        } else {
-          alert(res.message);
+        if (res) {
+          setList(res);
         }
       });
   };
 
-  const _onCheckboxChange = ({ name, checked }) => {
-    search({
-      city,
-      ...types,
-      keyword,
-      [name]: checked,
-    });
-    setTypes((p) => ({
-      ...p,
-      [name]: checked,
-    }));
-  };
-
-  const handleChange = (val) => {
-    search({
-      city: val,
-      status: '在招',
-      keyword,
-      ...types,
-    });
-    setCity(val);
+  const handleChange = (event) => {
+    setKeyword(event.target.value);
   };
 
   const _οnkeypress = (event) => {
     const keyCode = event.which || event.keyCode;
     if (keyCode === 13 && event.target.value !== '') {
       search({
-        city,
-        status: '在招',
         keyword: event.target.value,
-        ...types,
       });
-      setKeyword(event.target.value);
     }
   };
 
@@ -78,7 +52,8 @@ const KeywordSearch = () => {
               type="text"
               id="search"
               className="w-100 border-0 text-center rounded-pill"
-              placeholder="按照企业或职位名称查询"
+              placeholder="按照标题或城市名称查询"
+              onChange={handleChange}
               onKeyPress={_οnkeypress}
               autoFocus
               style={{ outline: 0, height: 35 }}
@@ -87,25 +62,7 @@ const KeywordSearch = () => {
         </div>
         <div className="card border-0 shadow">
           <div className="card-body">
-            <div className="row mb-3" style={{ fontSize: 14 }}>
-              <div className="col">
-                <CityDropdowns handleChange={handleChange} />
-              </div>
-              <div className="col flex-end">
-                <div className="pull-right text-primary">
-                  <TextCheckbox name="兼职" onChange={_onCheckboxChange}>
-                    兼职
-                  </TextCheckbox>
-                  <TextCheckbox name="全职" onChange={_onCheckboxChange}>
-                    全职
-                  </TextCheckbox>
-                  <TextCheckbox name="实习" onChange={_onCheckboxChange}>
-                    实习
-                  </TextCheckbox>
-                </div>
-              </div>
-            </div>
-            {list && list.map((item) => <RecruitmentRow1 key={item.id} {...item} />)}
+            {list && list.map((item) => <RecommendRow1 key={item.id} {...item} />)}
           </div>
         </div>
       </div>

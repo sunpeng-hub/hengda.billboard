@@ -1,4 +1,4 @@
 <!--index.wxml-->
 <view class="container">
-  <web-view src="{{url}}" />
+  <web-view src="{{url}}" bindload="load"/>
 </view>

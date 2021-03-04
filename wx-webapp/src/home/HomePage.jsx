@@ -16,6 +16,10 @@ const HomePage = () => {
 
   const [recommendTypes, setRecommendTypes] = useState({});
 
+  const [page, setPage] = useState(2);
+
+  const [flag, setFlag] = useState(true);
+
   // const [auth, setAuth] = useState(0);
 
   //const [signature, setSignature] = useState('');
@@ -35,15 +39,20 @@ const HomePage = () => {
           setTopicList(res.content);
         }
       });
-    fetch('./api/recommend/', {
+    fetch('./api/recommend/filter?filter=wx-default-list', {
       method: 'PUT',
       headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({}),
+      body: JSON.stringify({
+        category: '国企,公务员,事业单位,教师,其他',
+        address_level2: '',
+        keyword: '',
+        page: 1,
+      }),
     })
       .then((res) => res.json())
       .then((res) => {
-        if (res.content) {
-          setRecommendList(res.content);
+        if (res) {
+          setRecommendList(res);
         }
       });
   }, []);
@@ -69,6 +78,33 @@ const HomePage = () => {
           alert(res.message);
         }
       });
+  };
+
+  const load = () => {
+    fetch('./api/recommend/filter?filter=wx-default-list', {
+      method: 'PUT',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        category: '国企,公务员,事业单位,教师,其他',
+        address_level2: '',
+        keyword: '',
+        page: page,
+      }),
+    })
+      .then((res) => res.json())
+      .then((res) => {
+        if (res.length) {
+          setRecommendList(recommendList.concat(res));
+          setFlag(true);
+        } else {
+          setFlag(true);
+          alert('已经到底了');
+          document.getElementById('load').innerHTML = '已经到底了';
+          document.getElementById('load').disabled = true;
+        }
+      });
+    setPage(page + 1);
+    setFlag(false);
   };
 
   // 调用微信接口
@@ -165,7 +201,7 @@ const HomePage = () => {
             <input
               type="text"
               className="w-100 border-0 text-center rounded-pill"
-              placeholder="按照名称或企业名称查询"
+              placeholder="按照标题或城市名称查询"
               onClick={() => {
                 window.location = '#主页/查询/';
               }}
@@ -210,6 +246,17 @@ const HomePage = () => {
             </div>
           </div>
           {recommendList && recommendList.map((item) => <RecommendRow key={item.id} {...item} />)}
+          {flag === true ? (
+            <button id="load" className="btn btn-block mx-auto" onClick={load}>
+              点击加载更多
+            </button>
+          ) : (
+            <div className="d-flex justify-content-center">
+              <div className="spinner-border text-primary" role="status">
+                <span className="sr-only">Loading...</span>
+              </div>
+            </div>
+          )}
         </div>
         <br />
       </div>

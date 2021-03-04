@@ -99,7 +99,11 @@ const Navbar = (props) => {
       fetch(`./api/message/sys/total/个人用户/${_auth.id}`)
         .then((res) => res.json())
         .then((res) => {
-          setSys(res.content);
+          if (res.content) {
+            setSys(res.content);
+          } else {
+            setSys(0);
+          }
         });
     }
   }, [props, totalFlg]);
@@ -108,7 +112,7 @@ const Navbar = (props) => {
     <>
       <div style={{ height: 60 }} />
       <ul
-        className="nav bg-white nav-light fixed-bottom border-top text-center  nav-bottom justify-content-center"
+        className="nav bg-white nav-light fixed-bottom border-top text-center nav-bottom justify-content-center"
         style={{ fontSize: 11 }}
       >
         <li className="nav-item">

@@ -13,7 +13,7 @@ export const TextField = ({ required, category, id, name, value, handleChange, r
       type="text"
       id={id}
       name={name}
-      value={value || ''}
+      value={value}
       onChange={handleChange}
       className={`form-control form-control-sm rounded-0 ${req ? 'is-invalid' : ''}`}
     />
@@ -47,7 +47,7 @@ export const TextField1 = ({ required, category, id, name, value, handleChange, 
       type="text"
       id={id}
       name={name}
-      value={value || ''}
+      value={value}
       onChange={handleChange}
       className={`form-control form-control-sm rounded-0 ${req ? 'is-invalid' : ''}`}
     />

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 
 // import Title from '../components/Title'
 import Navbar from '../components/Navbar';
@@ -96,10 +96,10 @@ const List = () => {
     })
       .then((res) => res.json())
       .then((res) => {
-        if (res) {
-          setList(res);
+        if (res.content) {
+          setList(res.content);
         } else {
-          alert(res);
+          alert(res.message);
         }
       });
   };
@@ -107,11 +107,12 @@ const List = () => {
   const _onCheckboxChange = ({ name, checked }) => {
     search({
       city,
-      [name]: checked,
       ...types,
+      [name]: checked,
     });
     setTypes((p) => ({
       ...p,
+      [name]: checked,
     }));
   };
 

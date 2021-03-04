@@ -1,6 +1,6 @@
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faAngleRight } from '@fortawesome/free-solid-svg-icons';
+import { faAngleRight, faChevronCircleRight } from '@fortawesome/free-solid-svg-icons';
 import PropTypes from 'prop-types';
 
 export const RecruitmentRow = ({
@@ -161,7 +161,16 @@ RecruitRow.propTypes = {
   enterprise_name: PropTypes.string.isRequired,
 };
 
-export const RecruitRow1 = ({ title, id, uuid, address_level2, address_level3, date, school, category }) => (
+export const RecruitRow1 = ({
+  title,
+  id,
+  uuid,
+  address_level2,
+  address_level3,
+  date,
+  school,
+  category,
+}) => (
   <div className="row">
     <div className="col">
       <div className="pull-left">
@@ -182,7 +191,10 @@ export const RecruitRow1 = ({ title, id, uuid, address_level2, address_level3, d
         {date}
       </span>
       <br />
-      <span>{school}({category})</span>
+      <span>
+        {school}({category})
+      </span>
+      <hr />
     </div>
   </div>
 );
@@ -232,37 +244,53 @@ RecommendRow.propTypes = {
   qty: PropTypes.string.isRequired,
   enterprise_name: PropTypes.string.isRequired,
 };
-export const RecommendRow1 = ({ name, id, uuid, address1, address2, qty, enterprise_name }) => (
-  <div className="row">
-    <div className="col">
-      <div className="pull-left">
-        <strong>{name}</strong>
-      </div>
-      <div className="pull-right">
-        <a href={`#主页/消息详情/${id}?u_id=${uuid}`}>
-          详情
-          <FontAwesomeIcon icon={faAngleRight} size="lg" fixedWidth />
+export const RecommendRow1 = ({
+  title,
+  id,
+  uuid,
+  address_level1,
+  address_level2,
+  qty,
+  publisher,
+}) => (
+  <>
+    <div className="row">
+      <div className="col">
+        <a
+          href={`#主页/消息详情/${id}?u_id=${uuid}`}
+          style={{ color: '#202529', textDecoration: 'none' }}
+        >
+          <div className="row">
+            <div className="col text-hidden">
+              <strong>{title}</strong>
+            </div>
+          </div>
+          <span className="text-muted pull-left">
+            工作地点:
+            {address_level1}-{address_level2}
+            |人数:
+            {qty}
+          </span>
+          <div className="pull-right ">
+            <span style={{ color: '#00a4ff' }}>
+              <FontAwesomeIcon icon={faChevronCircleRight} size="lg" fixedWidth />
+            </span>
+          </div>
+          <br />
+          <span>{publisher}</span>
         </a>
       </div>
-      <br />
-      <span className="text-muted" style={{ fontSize: 11 }}>
-        工作地点：
-        {address1}-{address2}
-        |人数:
-        {qty}
-      </span>
-      <br />
-      <span>{enterprise_name}</span>
     </div>
-  </div>
+    <hr style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }} />
+  </>
 );
 
 RecommendRow1.propTypes = {
-  name: PropTypes.string.isRequired,
+  title: PropTypes.string.isRequired,
   id: PropTypes.number.isRequired,
   uuid: PropTypes.string.isRequired,
-  address1: PropTypes.string.isRequired,
-  address2: PropTypes.string.isRequired,
+  address_level1: PropTypes.string.isRequired,
+  address_level2: PropTypes.string.isRequired,
   qty: PropTypes.string.isRequired,
   enterprise_name: PropTypes.string.isRequired,
 };

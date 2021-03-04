@@ -105,6 +105,11 @@ export default function SignIn() {
   };
 
   const handleCode = () => {
+    const reg = /^[a-zA-Z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
+    if (reg.test(data.email) === false) {
+      window.alert('请检查邮箱格式是否输入正确');
+      return;
+    }
     fetch('./api/email/', {
       method: 'PUT',
       headers: { 'content-type': 'application/json' },
@@ -138,8 +143,9 @@ export default function SignIn() {
   };
 
   const checkEmail = () => {
-    const reg = /^[a-z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
-    return reg.test(data.email);
+    if (data.email === '') {
+      return true;
+    }
   };
 
   return (
@@ -244,7 +250,7 @@ export default function SignIn() {
                         <button
                           type="button"
                           style={{ fontSize: 14 }}
-                          disabled={!checkEmail()}
+                          disabled={checkEmail()}
                           onClick={handleCode}
                           className="col btn btn-secondary btn-sm btn-outline-secondary border-0 text-white"
                         >
@@ -267,11 +273,11 @@ export default function SignIn() {
               <div className="text-white text-center mb-3">
                 <span>
                   点击注册即您已同意
-                  <a href="/agt/user.html" style={{ textDecoration: 'none' }}>
+                  <a href="/wx/agt/user.html" className="text-decoration-none">
                     《用户协议》
                   </a>
                   和
-                  <a href="/agt/privacy.html" style={{ textDecoration: 'none' }}>
+                  <a href="/wx/agt/privacy.html" className="text-decoration-none">
                     《隐私政策》
                   </a>
                 </span>

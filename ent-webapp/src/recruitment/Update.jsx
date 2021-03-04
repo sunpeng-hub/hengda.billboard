@@ -3,7 +3,7 @@ import { useParams, useLocation } from 'react-router-dom';
 
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faBan } from '@fortawesome/free-solid-svg-icons';
-import { TextField, SelectField, IndustryField } from '../components/InputField';
+import { TextField, TextField1, SelectField, IndustryField } from '../components/InputField';
 import { _EditJournal } from '../commonFetch';
 import RichEditor from '../components/RichEditor';
 import { View } from './Components';
@@ -350,7 +350,7 @@ const Update = () => {
             <hr style={{ marginTop: 0 }} />
             <div className="row">
               <div className="col">
-                <TextField
+                <TextField1
                   category="职位名称"
                   name="name"
                   value={data.name}

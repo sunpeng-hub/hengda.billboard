@@ -172,7 +172,7 @@ export default function LeftNav({ component_option }) {
           )}
         </a>
       </li>
-      <li className="nav-item">
+      {/* <li className="nav-item">
         <a
           href="report.html"
           className="nav-link text-reset text-decoration-none"
@@ -187,7 +187,7 @@ export default function LeftNav({ component_option }) {
             <span>举报</span>
           )}
         </a>
-      </li>
+      </li> */}
       <hr />
       <li className="nav-item">
         <a

@@ -36,6 +36,10 @@ const Login = () => {
       window.alert(res.message);
     } else {
       sessionStorage.setItem('auth', JSON.stringify(res.content));
+      if (res.content.phone === '') {
+        window.location = '#/我的/用户';
+        return;
+      }
       window.location = '#/';
     }
   };
@@ -221,6 +225,15 @@ const Login = () => {
           </div>
           <div className="row flex-center">
             <span>合作咨询热线：18944650800&nbsp;|&nbsp;举报邮箱:job51-hlj@foxmail.com</span>
+            &nbsp;|&nbsp;
+            <a
+              className="footer-word"
+              target="_blank"
+              rel="noopener noreferrer"
+              href="https://www.12377.cn/"
+            >
+              网上有害信息举报专区
+            </a>
           </div>
         </div>
       </div>

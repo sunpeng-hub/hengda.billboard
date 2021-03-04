@@ -158,9 +158,9 @@ export default function Detail({ component_option }) {
                             onChange={(event) => setTag(event.target.value)}
                           >
                             <option value="">未选择</option>
+                            <option value="喜讯">喜讯</option>
                             <option value="热门话题">小程序首页</option>
                             <option value="职业发展">职业发展</option>
-                            <option value="面试问题">面试问题</option>
                             <option value="职业规划">职业规划</option>
                           </select>
                         </div>

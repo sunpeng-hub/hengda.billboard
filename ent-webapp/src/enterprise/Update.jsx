@@ -450,7 +450,7 @@ const Update = () => {
               </div>
               <div className="col-3 col-md-4">
                 <TextField1
-                  category="电话号码"
+                  category="公司固定电话"
                   name="phone"
                   value={data.phone}
                   handleChange={handleChange}

@@ -48,7 +48,7 @@
  }
 
  .logo {
-   width: 300px;
+   width: 24%;
    height: 85px;
    /* margin-top: 30px; */
  }
@@ -59,7 +59,7 @@
  }
 
  .ad {
-   width: 953px;
+   width: 76%;
    height: 85px
  }
 
@@ -107,8 +107,16 @@
  }
 
  .footer {
-   position: relative;
    height: 90px;
+   position: relative;
+ }
+
+ .footer1 {
+  height: 90px;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  position: absolute;
  }
 
  .footer-nav {
@@ -154,9 +162,10 @@
  }
 
  .login-body {
-   background: url(lib/img/2020.png);
+   background: url(lib/img/2021.png);
    background-repeat: no-repeat;
-   background-size: 100% 100%
+   background-size: 100% 100%;
+   margin-top: 90px
  }
 
  .pull-left {

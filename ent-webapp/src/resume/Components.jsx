@@ -41,7 +41,7 @@ export const Sidebar = ({ category }) => (
         <FontAwesomeIcon icon={faAngleRight} fixedWidth />
       </span>
     </a>
-    <a
+    {/* <a
       href="#简历/推荐"
       className={`list-group-item list-group-item-action border-0 font-weight-bold ${
         category === '推荐' && 'text-primary'
@@ -51,7 +51,7 @@ export const Sidebar = ({ category }) => (
       <span className="pull-right">
         <FontAwesomeIcon icon={faAngleRight} fixedWidth />
       </span>
-    </a>
+    </a> */}
   </div>
 );
 
@@ -193,6 +193,23 @@ export const ResumeView = (props) => {
         </div>
       </div>
       <hr />
+      <div className="row">
+        <div className="col">
+          <h4>毕业院校</h4>
+          <span style={{ fontSize: 'larger' }}>{school}</span>
+          <span className="text-muted">
+            /{education}
+            <br />
+            在校时间: {date_begin}
+            &nbsp; - &nbsp;
+            {date_end}
+            <br />
+            专业:{major}
+          </span>
+        </div>
+      </div>
+      <hr />
+
       <div className="row">
         <div className="col">
           <h4>自我评价</h4>

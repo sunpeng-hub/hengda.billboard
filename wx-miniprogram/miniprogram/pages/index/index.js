@@ -3,7 +3,7 @@ const app = getApp()
 
 Page({
   data: {
-    url: 'https://www.longzhaopin.com/wx/?ver=2.0.16/#/'
+    url: 'https://www.longzhaopin.com/wx/?ver=2.0.20/#/'
   },
 
   onLoad: function (options) {
@@ -15,5 +15,5 @@ Page({
       title: '龙江学子就业平台',
       path: '/pages/index/index?url=' + encodeURIComponent(options.webViewUrl),
     }
-  }
+  },
 });

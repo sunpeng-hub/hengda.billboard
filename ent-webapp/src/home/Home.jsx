@@ -11,10 +11,10 @@ const TopicRow = (item) => {
       switch (tag) {
         case '职业发展':
           return <span className="text-primary">[{item.tag}]</span>;
-        case '面试问题':
-          return <span className="text-success">[{item.tag}]</span>;
+        case '喜讯':
+          return <span className="text-danger">[{item.tag}]</span>;
         case '职业规划':
-          return <span className="text-info">[{item.tag}]</span>;
+          return <span className="text-success">[{item.tag}]</span>;
         default:
           return <span className="text-dark">[{item.tag}]</span>;
       }
@@ -27,10 +27,16 @@ const TopicRow = (item) => {
     <>
       <div className="row">
         <div className="col">
-          <strong>
-            {getTag(item.tag)}
-            {item.title}
-          </strong>
+          <a
+            className="text-dark"
+            style={{ textDecoration: 'none' }}
+            href={`#首页/${item.id}?u_id=${item.uuid}`}
+          >
+            <strong>
+              {getTag(item.tag)}
+              {item.title}
+            </strong>
+          </a>
         </div>
       </div>
       <div className="row">
@@ -39,7 +45,10 @@ const TopicRow = (item) => {
         </div>
         <div className="col">
           {item.id ? (
-            <a className="pull-right text-muted" href={`#首页/${item.id}?u_id=${item.uuid}`}>
+            <a
+              className="pull-right text-muted text-decoration-none"
+              href={`#首页/${item.id}?u_id=${item.uuid}`}
+            >
               阅读全文
               {'>>>'}
             </a>
@@ -106,13 +115,13 @@ const Home = () => {
         <div className="col card rounded-0 shadow">
           <div className="mt-3">
             <BarChart
-              width={1200}
+              width={1240}
               height={350}
               data={chartData}
               margin={{
                 top: 5,
                 right: 30,
-                left: 20,
+                left: 10,
                 bottom: 5,
               }}
             >

@@ -6,7 +6,7 @@ import Footer from '../components/Footer';
 import Title from '../components/Title';
 import Edit from './Edit';
 import Login from './Login';
-import Report from './Report';
+// import Report from './Report';
 import Feeback from './Feeback';
 
 const Index = () => {
@@ -30,9 +30,9 @@ const Index = () => {
             <Route exact path="/记录/操作/">
               <Edit />
             </Route>
-            <Route exact path="/记录/举报/">
+            {/* <Route exact path="/记录/举报/">
               <Report />
-            </Route>
+            </Route> */}
             <Route exact path="/记录/投诉/">
               <Feeback />
             </Route>

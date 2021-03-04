@@ -73,12 +73,17 @@ const List = () => {
           />
         </div>
         <div className="col">
-          <TextField
+          <SelectField
             category="投递职位名称"
             name="recruitment_name"
             value={param.recruitment}
             handleChange={handleChange}
-          />
+          >
+            <option></option>
+            {list.map((item) => (
+              <option key={item.id}>{item.recruitment_name}</option>
+            ))}
+          </SelectField>
         </div>
         <div className="col">
           <DateField

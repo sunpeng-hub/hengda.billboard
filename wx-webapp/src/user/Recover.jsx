@@ -93,6 +93,11 @@ const Recover = () => {
   };
 
   const handleCode = () => {
+    const reg = /^[a-zA-Z0-9]+([._\\-]*[a-z0-9])*@([a-z0-9]+[-a-z0-9]*[a-z0-9]+.){1,63}[a-z0-9]+$/;
+    if (reg.test(data.email) === false) {
+      window.alert('请检查邮箱格式是否输入正确');
+      return;
+    }
     fetch('./api/common-user/checkRecover/', {
       method: 'PUT',
       headers: { 'content-type': 'application/json' },
@@ -140,8 +145,9 @@ const Recover = () => {
   };
 
   const checkEmail = () => {
-    const reg = /^([a-zA-Z]|[0-9])(\w|-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
-    return reg.test(data.email);
+    if (data.email === '') {
+      return true;
+    }
   };
 
   return (
@@ -190,7 +196,7 @@ const Recover = () => {
                         <button
                           type="button"
                           className="col btn btn-secondary btn-sm btn-outline-secondary border-0 text-white"
-                          disabled={!checkEmail()}
+                          disabled={checkEmail()}
                           onClick={handleCode}
                           style={{ fontSize: 14 }}
                         >

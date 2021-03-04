@@ -43,6 +43,12 @@ const UserRouter = () => (
       <Route exact path="/我的/简历/行业/:id">
         <Industry />
       </Route>
+      <Route exact path="/我的/简历/项目经历/:id">
+        <Project />
+      </Route>
+      <Route exact path="/我的/简历/工作经历/:id">
+        <Work />
+      </Route>
     </Switch>
   </Router>
 );
@@ -53,6 +59,8 @@ const Resume = () => {
   const [auth, setAuth] = useState(0);
 
   const [file, setFile] = useState([]);
+
+  const [list, setList] = useState([]);
 
   useEffect(() => {
     const _auth = JSON.parse(localStorage.getItem('auth'));
@@ -65,43 +73,53 @@ const Resume = () => {
       fetch(`./api/resume/user/${_auth.id}?u_id=${_auth.uuid}`)
         .then((res) => res.json())
         .then((res) => {
-          if (res.content) {
-            setData(res.content);
+          if (res) {
+            setData(res);
+            let career = JSON.parse(res.career);
+            let arr = [];
+            career.forEach((item) => {
+              arr.push(JSON.parse(item));
+            });
+            setList(arr);
             if (document.getElementById('ziwopingjia') !== null) {
-              document.getElementById('ziwopingjia').innerHTML = res.content.ziwopingjia;
+              document.getElementById('ziwopingjia').innerHTML = res.ziwopingjia;
             }
-          } else if (res.content !== undefined) {
-            fetch(`./api/resume/init?u_id=${_auth.uuid}`, {
+          } else if (res !== undefined) {
+            fetch('./api/resume/', {
               method: 'POST',
               headers: { 'content-type': 'application/json' },
-              body: JSON.stringify({ common_user_id: _auth.id }),
-            })
-              .then((res1) => res1.json())
-              .then(() => {
-                setData({
-                  phone: '',
-                  email: '',
-                  name: '',
-                  gender: '',
-                  birthday: '',
-                  address1: '',
-                  address2: '',
-                  address3: '',
-                  address4: '',
-                  school: '',
-                  education: '',
-                  major: '',
-                  date_begin: '',
-                  date_end: '',
-                  qiwangzhiwei: '',
-                  qiwanghangye: '',
-                  yixiangchengshi: '',
-                  ziwopingjia: '',
-                  status: '保密',
-                });
+              body: JSON.stringify({ candidate_id: _auth.id }),
+            }).then((res1) => {
+              if (res1.status !== 200) {
+                window.console.info('服务器错误');
+                return;
+              }
+              setData({
+                phone: '',
+                email: '',
+                name: '',
+                gender: '',
+                birthday: '',
+                address1: '',
+                address2: '',
+                address3: '',
+                address4: '',
+                school: '',
+                education: '',
+                major: '',
+                date_begin: '',
+                date_end: '',
+                qiwangzhiwei: '',
+                qiwanghangye: '',
+                yixiangchengshi: '',
+                ziwopingjia: '',
+                status: '保密',
+                career: '[]',
+                record: '[]',
               });
+            });
           } else {
-            alert(res.message);
+            window.console.info(res);
           }
         });
 
@@ -253,6 +271,8 @@ const Resume = () => {
     window.location = '#/登录';
   };
 
+  const delete_btn = () => {};
+
   return (
     <>
       {auth === 0 ? (
@@ -292,7 +312,7 @@ const Resume = () => {
             </div>
           </div> */}
           <div className="card mt-3 border-0 mb-5">
-            <ToBack href="#我的" category="我的简历" />
+            <ToBack href="#我的" category="我的简历" refresh />
             <div className="card-body">
               <div className="mb-2 resume-personal pt-2 pb-1 text-center">
                 <h6>简历预览</h6>
@@ -385,6 +405,95 @@ const Resume = () => {
 
                   <div className="mt-1">
                     <FontAwesomeIcon icon={faBriefcase} fixedWidth />
+                    {data.qiwanghangye}-{data.qiwangzhiwei}
+                  </div>
+                </div>
+              </div>
+
+              <hr />
+
+              <div className="row">
+                <div className="col">
+                  <h5>工作经历</h5>
+                </div>
+                <div className="col">
+                  <a
+                    className="pull-right"
+                    href={`#/我的/简历/工作经历/${auth.id}?u_id=${auth.uuid}`}
+                  >
+                    <FontAwesomeIcon icon={faPenSquare} fixedWidth />
+                    添加
+                  </a>
+                </div>
+              </div>
+
+              {list &&
+                list.map((item, index) => (
+                  <div className="row" key={index}>
+                    <div className="col">
+                      <strong style={{ fontSize: 15 }}>
+                        公司名称：
+                        {item.employer}
+                        <button
+                          className="pull-right border-0 bg-transparent text-danger"
+                          onClick={delete_btn}
+                        >
+                          删除
+                        </button>
+                      </strong>
+                      <div className="mt-1">
+                        职位名称：
+                        {item.title}
+                      </div>
+                      <div className="mt-1">
+                        在职时间：
+                        {item.date_begin}-{item.date_end}
+                      </div>
+                      <div className="mt-1">
+                        工作描述：
+                        {item.description}
+                      </div>
+                    </div>
+                  </div>
+                ))}
+
+              <hr />
+
+              <div className="row">
+                <div className="col">
+                  <h5>项目经历</h5>
+                </div>
+                <div className="col">
+                  <a
+                    className="pull-right"
+                    href={`#/我的/简历/项目经历/${auth.id}?u_id=${auth.uuid}`}
+                  >
+                    <FontAwesomeIcon icon={faPenSquare} fixedWidth />
+                    编辑
+                  </a>
+                </div>
+              </div>
+
+              <div className="row">
+                <div className="col">
+                  <div>
+                    项目名称：
+                    {data.yixiangchengshi}
+                  </div>
+                  <div className="mt-1">
+                    项目职位：
+                    {data.qiwanghangye}-{data.qiwangzhiwei}
+                  </div>
+                  <div className="mt-1">
+                    项目时间：
+                    {data.qiwanghangye}-{data.qiwangzhiwei}
+                  </div>
+                  <div className="mt-1">
+                    项目职责：
+                    {data.qiwanghangye}-{data.qiwangzhiwei}
+                  </div>
+                  <div className="mt-1">
+                    项目描述：
                     {data.qiwanghangye}-{data.qiwangzhiwei}
                   </div>
                 </div>
@@ -532,10 +641,10 @@ const Personal = () => {
       fetch(`./api/resume/user/${id}${search}`)
         .then((res) => res.json())
         .then((res) => {
-          if (res.content) {
-            setData(res.content);
+          if (res) {
+            setData(res);
           } else {
-            alert(res.message);
+            window.console.info(res);
           }
         });
     }
@@ -552,24 +661,39 @@ const Personal = () => {
       method: 'PUT',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.message) {
-          alert(res.message);
-        } else {
-          _EditJournal(
-            {
-              category2: '简历',
-              data_id: data.id,
-              data_uuid: data.uuid,
-              remark: '修改简历个人信息',
-            },
-            () => {},
-          );
-          window.history.go(-1);
-        }
-      });
+    }).then((res) => {
+      if (res.status !== 200) {
+        window.console.info('服务器错误');
+        return;
+      }
+      _EditJournal(
+        {
+          category2: '简历',
+          data_id: data.id,
+          data_uuid: data.uuid,
+          remark: '修改简历个人信息',
+        },
+        () => {},
+      );
+      window.history.go(-1);
+    });
+    // .then((res) => res.json())
+    // .then((res) => {
+    //   if (res.message) {
+    //     window.console.info('服务器错误');
+    //   } else {
+    //     _EditJournal(
+    //       {
+    //         category2: '简历',
+    //         data_id: data.id,
+    //         data_uuid: data.uuid,
+    //         remark: '修改简历个人信息',
+    //       },
+    //       () => {},
+    //     );
+    //     window.history.go(-1);
+    //   }
+    // });
   };
 
   const toProvinceCity = () => {
@@ -671,10 +795,10 @@ const School = () => {
     fetch(`./api/resume/user/${id}${search}`)
       .then((res) => res.json())
       .then((res) => {
-        if (res.content) {
-          setData(res.content);
+        if (res) {
+          setData(res);
         } else {
-          alert(res.message);
+          window.console.info(res);
         }
       });
   }, [id, search]);
@@ -689,24 +813,39 @@ const School = () => {
       method: 'PUT',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.message) {
-          alert(res.message);
-        } else {
-          _EditJournal(
-            {
-              category2: '简历',
-              data_id: data.id,
-              data_uuid: data.uuid,
-              remark: '修改简历毕业院校',
-            },
-            () => {},
-          );
-          window.history.go(-1);
-        }
-      });
+    }).then((res) => {
+      if (res.status !== 200) {
+        window.console.info('服务器错误');
+        return;
+      }
+      _EditJournal(
+        {
+          category2: '简历',
+          data_id: data.id,
+          data_uuid: data.uuid,
+          remarkL: '修改简历毕业院校',
+        },
+        () => {},
+      );
+      window.history.go(-1);
+    });
+    // .then((res) => res.json())
+    // .then((res) => {
+    //   if (res.message) {
+    //     window.console.info('服务器错误');
+    //   } else {
+    //     _EditJournal(
+    //       {
+    //         category2: '简历',
+    //         data_id: data.id,
+    //         data_uuid: data.uuid,
+    //         remark: '修改简历毕业院校',
+    //       },
+    //       () => {},
+    //     );
+    //     window.history.go(-1);
+    //   }
+    // });
   };
 
   return (
@@ -811,10 +950,10 @@ const Intention = () => {
       fetch(`./api/resume/user/${id}${search}`)
         .then((res) => res.json())
         .then((res) => {
-          if (res.content) {
-            setData(res.content);
+          if (res) {
+            setData(res);
           } else {
-            alert(res.message);
+            window.console.info(res);
           }
         });
     }
@@ -831,24 +970,39 @@ const Intention = () => {
       method: 'PUT',
       headers: { 'content-type': 'application/json' },
       body: JSON.stringify(data),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.message) {
-          alert(res.message);
-        } else {
-          _EditJournal(
-            {
-              category2: '简历',
-              data_id: data.id,
-              data_uuid: data.uuid,
-              remark: '修改简历求职意向',
-            },
-            () => {},
-          );
-          window.history.go(-1);
-        }
-      });
+    }).then((res) => {
+      if (res.status !== 200) {
+        window.console.info('服务器错误');
+        return;
+      }
+      _EditJournal(
+        {
+          category2: '简历',
+          data_id: data.id,
+          data_uuid: data.uuid,
+          remark: '修改简历求职意向',
+        },
+        () => {},
+      );
+      window.history.go(-1);
+    });
+    // .then((res) => res.json())
+    // .then((res) => {
+    //   if (res.message) {
+    //     window.console.info('服务器错误');
+    //   } else {
+    //     _EditJournal(
+    //       {
+    //         category2: '简历',
+    //         data_id: data.id,
+    //         data_uuid: data.uuid,
+    //         remark: '修改简历求职意向',
+    //       },
+    //       () => {},
+    //     );
+    //     window.history.go(-1);
+    //   }
+    // });
   };
 
   const toIndustry = () => {
@@ -909,11 +1063,11 @@ const Evaluation = () => {
     fetch(`./api/resume/user/${id}${search}`)
       .then((res) => res.json())
       .then((res) => {
-        if (res.content) {
-          setData(res.content);
-          setContent(res.content.ziwopingjia);
+        if (res) {
+          setData(res);
+          setContent(res.ziwopingjia);
         } else {
-          alert(res.message);
+          window.console.info(res);
         }
       });
   }, [id, search]);
@@ -926,24 +1080,39 @@ const Evaluation = () => {
         ...data,
         ziwopingjia: content,
       }),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.message) {
-          alert(res.message);
-        } else {
-          _EditJournal(
-            {
-              category2: '简历',
-              data_id: data.id,
-              data_uuid: data.uuid,
-              remark: '修改简历自我评价',
-            },
-            () => {},
-          );
-          window.history.go(-1);
-        }
-      });
+    }).then((res) => {
+      if (res.status !== 200) {
+        window.console.info('服务器错误');
+        return;
+      }
+      _EditJournal(
+        {
+          category2: '简历',
+          data_id: data.id,
+          data_uuid: data.uuid,
+          remark: '修改简历自我评价',
+        },
+        () => {},
+      );
+      window.history.go(-1);
+    });
+    // .then((res) => res.json())
+    // .then((res) => {
+    //   if (res.message) {
+    //     window.console.info('服务器错误');
+    //   } else {
+    //     _EditJournal(
+    //       {
+    //         category2: '简历',
+    //         data_id: data.id,
+    //         data_uuid: data.uuid,
+    //         remark: '修改简历自我评价',
+    //       },
+    //       () => {},
+    //     );
+    //     window.history.go(-1);
+    //   }
+    // });
   };
 
   return (
@@ -968,7 +1137,7 @@ const Evaluation = () => {
                       ],
                     }}
                     placeholder="请填写内容"
-                    value={content}
+                    value={content || ''}
                     onChange={setContent}
                   />
                 </div>
@@ -1013,8 +1182,8 @@ const ProvinceCity = () => {
     fetch(`./api/resume/user/${id}${search}`)
       .then((res) => res.json())
       .then((res) => {
-        if (res.content) {
-          setResume(res.content);
+        if (res) {
+          setResume(res);
           fetch('/lib/address.json')
             .then((res1) => res1.json())
             .then((res1) => {
@@ -1027,8 +1196,8 @@ const ProvinceCity = () => {
                 }));
               setLevel(_level);
 
-              if (res.content.address1) {
-                const l1 = _level.find((item) => item.name === res.content.address1);
+              if (res.address1) {
+                const l1 = _level.find((item) => item.name === res.address1);
                 if (l1) {
                   const _level2 = Object.getOwnPropertyNames(res1)
                     .filter((it) => {
@@ -1043,7 +1212,7 @@ const ProvinceCity = () => {
                       name: res1[code],
                     }));
                   setLevel2List(_level2);
-                  const l2 = _level2.find((item) => item.name === res.content.address2);
+                  const l2 = _level2.find((item) => item.name === res.address2);
                   if (l2) {
                     setLevel3List(
                       Object.getOwnPropertyNames(res1)
@@ -1056,12 +1225,12 @@ const ProvinceCity = () => {
                   }
                 }
               }
-              setLevel1(res.content.address1);
-              setLevel2(res.content.address2);
-              setLevel3(res.content.address3);
+              setLevel1(res.address1);
+              setLevel2(res.address2);
+              setLevel3(res.address3);
             });
         } else {
-          alert(res.message);
+          window.console.info(res);
         }
       });
   }, [id, search]);
@@ -1113,37 +1282,65 @@ const ProvinceCity = () => {
         address2: level2,
         address3: level3,
       }),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.message) {
-          alert(res.message);
-        } else {
-          const resume_data = JSON.parse(sessionStorage.getItem('resume_data'));
-          if (resume_data !== null) {
-            setResume(resume_data);
-          }
-          sessionStorage.setItem(
-            'resume_data',
-            JSON.stringify({
-              ...resume_data,
-              address1: level1,
-              address2: level2,
-              address3: level3,
-            }),
-          );
-          _EditJournal(
-            {
-              category2: '简历',
-              data_id: resume.id,
-              data_uuid: resume.uuid,
-              remark: '修改简历个人信息',
-            },
-            () => {},
-          );
-          window.history.go(-1);
-        }
-      });
+    }).then((res) => {
+      if (res.status !== 200) {
+        window.console.info('服务器错误');
+        return;
+      }
+      const resume_data = JSON.parse(sessionStorage.getItem('resume_data'));
+      if (resume_data !== null) {
+        setResume(resume_data);
+      }
+      sessionStorage.setItem(
+        'resume_data',
+        JSON.stringify({
+          ...resume_data,
+          address1: level1,
+          address2: level2,
+          address3: level3,
+        }),
+      );
+      _EditJournal(
+        {
+          category: '简历',
+          data_id: resume.id,
+          data_uuid: resume.uuid,
+          remark: '修改简历个人信息',
+        },
+        () => {},
+      );
+      window.history.go(-1);
+    });
+    // .then((res) => res.json())
+    // .then((res) => {
+    //   if (res.message) {
+    //     window.console.info('服务器错误');
+    //   } else {
+    //     const resume_data = JSON.parse(sessionStorage.getItem('resume_data'));
+    //     if (resume_data !== null) {
+    //       setResume(resume_data);
+    //     }
+    //     sessionStorage.setItem(
+    //       'resume_data',
+    //       JSON.stringify({
+    //         ...resume_data,
+    //         address1: level1,
+    //         address2: level2,
+    //         address3: level3,
+    //       }),
+    //     );
+    //     _EditJournal(
+    //       {
+    //         category2: '简历',
+    //         data_id: resume.id,
+    //         data_uuid: resume.uuid,
+    //         remark: '修改简历个人信息',
+    //       },
+    //       () => {},
+    //     );
+    //     window.history.go(-1);
+    //   }
+    // });
   };
 
   return (
@@ -1238,9 +1435,7 @@ const Industry = () => {
       fetch('./api/common-data/hangye/')
         .then((res) => res.json())
         .then((res) => {
-          if (res.message) {
-            window.alert(res.message);
-          } else {
+          if (res.content) {
             localStorage.setItem(
               'industry',
               JSON.stringify({
@@ -1249,6 +1444,8 @@ const Industry = () => {
               }),
             );
             setIndustry(res.content);
+          } else {
+            window.console.info(res.message);
           }
         });
     };
@@ -1269,18 +1466,18 @@ const Industry = () => {
       fetch(`./api/resume/user/${id}${search}`)
         .then((res) => res.json())
         .then((res) => {
-          if (res.content) {
-            setResume(res.content);
-            if (res.content.qiwanghangye) {
-              const l1 = industry.find((item) => item.name === res.content.qiwanghangye);
+          if (res) {
+            setResume(res);
+            if (res.qiwanghangye) {
+              const l1 = industry.find((item) => item.name === res.qiwanghangye);
               if (l1) {
                 setLevel2(industry.filter((item) => item.master_id === l1.id));
               }
             }
-            setQiwangzhiwei(() => res.content.qiwangzhiwei);
-            setQiwanghangye(() => res.content.qiwanghangye);
+            setQiwangzhiwei(() => res.qiwangzhiwei);
+            setQiwanghangye(() => res.qiwanghangye);
           } else {
-            alert(res.message);
+            window.console.info(res);
           }
         });
     }
@@ -1299,6 +1496,10 @@ const Industry = () => {
   };
 
   const handleSave = () => {
+    if (qiwangzhiwei === 0) {
+      window.alert('请选择您所期望的职位');
+      return;
+    }
     fetch(`./api/resume/${id}?u_id=${resume.uuid}`, {
       method: 'PUT',
       headers: { 'content-type': 'application/json' },
@@ -1307,36 +1508,63 @@ const Industry = () => {
         qiwangzhiwei,
         qiwanghangye,
       }),
-    })
-      .then((res) => res.json())
-      .then((res) => {
-        if (res.message) {
-          alert(res.message);
-        } else {
-          const industry_data = JSON.parse(sessionStorage.getItem('industry_data'));
-          if (industry_data !== null) {
-            setResume(industry_data);
-          }
-          sessionStorage.setItem(
-            'industry_data',
-            JSON.stringify({
-              ...industry_data,
-              qiwangzhiwei,
-              qiwanghangye,
-            }),
-          );
-          _EditJournal(
-            {
-              category2: '简历',
-              data_id: resume.id,
-              data_uuid: resume.uuid,
-              remark: '修改简历求职意向',
-            },
-            () => {},
-          );
-          window.history.go(-1);
-        }
-      });
+    }).then((res) => {
+      if (res.status !== 200) {
+        window.console.info('服务器错误');
+        return;
+      }
+      const industry_data = JSON.parse(sessionStorage.getItem('industry_data'));
+      if (industry_data !== null) {
+        setResume(industry_data);
+      }
+      sessionStorage.setItem(
+        'industry_data',
+        JSON.stringify({
+          ...industry_data,
+          qiwangzhiwei,
+          qiwanghangye,
+        }),
+      );
+      _EditJournal(
+        {
+          category2: '简历',
+          data_id: resume.id,
+          data_uuid: resume.uuid,
+          remark: '修改简历求职意向',
+        },
+        () => {},
+      );
+      window.history.go(-1);
+    });
+    // .then((res) => res.json())
+    // .then((res) => {
+    //   if (res.message) {
+    //     window.console.info('服务器错误');
+    //   } else {
+    //     const industry_data = JSON.parse(sessionStorage.getItem('industry_data'));
+    //     if (industry_data !== null) {
+    //       setResume(industry_data);
+    //     }
+    //     sessionStorage.setItem(
+    //       'industry_data',
+    //       JSON.stringify({
+    //         ...industry_data,
+    //         qiwangzhiwei,
+    //         qiwanghangye,
+    //       }),
+    //     );
+    //     _EditJournal(
+    //       {
+    //         category2: '简历',
+    //         data_id: resume.id,
+    //         data_uuid: resume.uuid,
+    //         remark: '修改简历求职意向',
+    //       },
+    //       () => {},
+    //     );
+    //     window.history.go(-1);
+    //   }
+    // });
   };
 
   return (
@@ -1383,6 +1611,329 @@ const Industry = () => {
         <div className="row text-center nav-row">
           <button type="button" className="btn btn-primary nav-btn" onClick={handleSave}>
             确定
+          </button>
+        </div>
+      </ul>
+    </>
+  );
+};
+
+const Project = () => {
+  const [data, setData] = useState({});
+
+  const { id } = useParams();
+
+  // const { search } = useLocation();
+
+  // useEffect(() => {
+  //   fetch(`./api/resume/user/${id}${search}`)
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       if (res) {
+  //         setData(res);
+  //       } else {
+  //         window.console.info('服务器错误');
+  //       }
+  //     });
+  // }, [id, search]);
+
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+    setData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSave = () => {
+    fetch(`./api/resume/${id}?u_id=${data.uuid}`, {
+      method: 'PUT',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify(data),
+    }).then((res) => {
+      if (res.status !== 200) {
+        window.console.info('服务器错误');
+        return;
+      }
+      _EditJournal(
+        {
+          category2: '简历',
+          data_id: data.id,
+          data_uuid: data.uuid,
+          remarkL: '修改简历毕业院校',
+        },
+        () => {},
+      );
+      window.history.go(-1);
+    });
+    // .then((res) => res.json())
+    // .then((res) => {
+    //   if (res.message) {
+    //     window.console.info('服务器错误');
+    //   } else {
+    //     _EditJournal(
+    //       {
+    //         category2: '简历',
+    //         data_id: data.id,
+    //         data_uuid: data.uuid,
+    //         remark: '修改简历毕业院校',
+    //       },
+    //       () => {},
+    //     );
+    //     window.history.go(-1);
+    //   }
+    // });
+  };
+
+  return (
+    <>
+      <div className="container-fluid">
+        <div className="card mt-4 mb-5 bg-white rounded border-0 rounded">
+          <ToBack category="我的简历" />
+          <div className="card-body">
+            <div className="resume-personal pt-2 pb-1 text-center">
+              <h6>项目经历</h6>
+            </div>
+            <div className="row">
+              <InputField
+                name="project"
+                category="项目名称"
+                value={data.school}
+                placeholder="请填写参加的项目名称"
+                handleChange={handleChange}
+              />
+            </div>
+            <div className="row">
+              <InputField
+                name="zhiwei"
+                category="项目职位"
+                value={data.major}
+                placeholder="请填写你所担任的职位"
+                handleChange={handleChange}
+              />
+            </div>
+            <div className="row">
+              <div className="form-group row input-label">
+                <label className="col-4 col-form-label text-right text-muted">开始时间</label>
+                <div className="col">
+                  <input
+                    type="date"
+                    name="date_begin"
+                    value={data.date_begin || ''}
+                    className="form-control-plaintext input-f"
+                    placeholder="项目开始时间"
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="form-group row input-label">
+                <label className="col-4 col-form-label text-right text-muted">结束时间</label>
+                <div className="col">
+                  <input
+                    type="date"
+                    name="date_end"
+                    value={data.date_end || ''}
+                    className="form-control-plaintext input-f"
+                    placeholder="项目结束时间"
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row mt-3">
+              <div className="col">
+                <div className="form-group">
+                  <ReactQuill
+                    formats={['align', 'bold', 'indent']}
+                    modules={{
+                      toolbar: [[{ align: [] }], ['bold'], [{ indent: '-1' }, { indent: '+1' }]],
+                    }}
+                    placeholder="请填写你参加的项目职责"
+                    // value={}
+                    // onChange={}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row mt-3">
+              <div className="col">
+                <div className="form-group">
+                  <ReactQuill
+                    formats={['align', 'bold', 'indent']}
+                    modules={{
+                      toolbar: [[{ align: [] }], ['bold'], [{ indent: '-1' }, { indent: '+1' }]],
+                    }}
+                    placeholder="请填写你参加的项目描述"
+                    // value={}
+                    // onChange={}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ul className="nav bg-light nav-light fixed-bottom nav-bottom border-top">
+        <div className="row text-center nav-row">
+          <button type="button" className="btn btn-primary nav-btn" onClick={handleSave}>
+            保存
+          </button>
+        </div>
+      </ul>
+    </>
+  );
+};
+const Work = () => {
+  const [data, setData] = useState({});
+
+  const { id } = useParams();
+
+  const [content, setContent] = useState('');
+
+  // const { search } = useLocation();
+
+  // useEffect(() => {
+  //   fetch(`./api/resume/user/${id}${search}`)
+  //     .then((res) => res.json())
+  //     .then((res) => {
+  //       if (res) {
+  //         setData(res);
+  //       } else {
+  //         window.console.info(res);
+  //       }
+  //     });
+  // }, [id, search]);
+
+  const handleChange = (e) => {
+    const { value, name } = e.target;
+    setData((prev) => ({ ...prev, [name]: value }));
+  };
+
+  const handleSave = () => {
+    let content1 = content.replace(/<\/?.+?>/g, '');
+    fetch(`./api/resume/${id}?option=save-career`, {
+      method: 'PUT',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({
+        employer: data.employer,
+        title: data.title,
+        date_begin: data.date_begin,
+        date_end: data.date_end,
+        description: content1,
+      }),
+    }).then((res) => {
+      if (res.status !== 200) {
+        window.console.info('服务器错误');
+        return;
+      }
+      _EditJournal(
+        {
+          category2: '简历',
+          data_id: data.id,
+          data_uuid: data.uuid,
+          remarkL: '添加简历工作经历',
+        },
+        () => {},
+      );
+      window.history.go(-1);
+    });
+    // .then((res) => res.json())
+    // .then((res) => {
+    //   if (res.message) {
+    //     window.console.info('服务器错误');
+    //   } else {
+    //     _EditJournal(
+    //       {
+    //         category2: '简历',
+    //         data_id: data.id,
+    //         data_uuid: data.uuid,
+    //         remark: '修改简历毕业院校',
+    //       },
+    //       () => {},
+    //     );
+    //     window.history.go(-1);
+    //   }
+    // });
+  };
+
+  return (
+    <>
+      <div className="container-fluid">
+        <div className="card mt-4 mb-5 bg-white rounded border-0 rounded">
+          <ToBack category="我的简历" />
+          <div className="card-body">
+            <div className="resume-personal pt-2 pb-1 text-center">
+              <h6>工作经历</h6>
+            </div>
+            <div className="row">
+              <InputField
+                name="employer"
+                category="公司名称"
+                value={data.employer}
+                placeholder="请填写公司名称"
+                handleChange={handleChange}
+              />
+            </div>
+            <div className="row">
+              <InputField
+                name="title"
+                category="职位名称"
+                value={data.title}
+                placeholder="请填写你所担任的职位"
+                handleChange={handleChange}
+              />
+            </div>
+            <div className="row">
+              <div className="form-group row input-label">
+                <label className="col-4 col-form-label text-right text-muted">入职时间</label>
+                <div className="col">
+                  <input
+                    type="date"
+                    name="date_begin"
+                    value={data.date_begin || ''}
+                    className="form-control-plaintext input-f"
+                    placeholder="入职时间"
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row">
+              <div className="form-group row input-label">
+                <label className="col-4 col-form-label text-right text-muted">离职时间</label>
+                <div className="col">
+                  <input
+                    type="date"
+                    name="date_end"
+                    value={data.date_end || ''}
+                    className="form-control-plaintext input-f"
+                    placeholder="离职时间"
+                    onChange={handleChange}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="row mt-3">
+              <div className="col">
+                <div className="form-group">
+                  <ReactQuill
+                    formats={['align', 'bold', 'indent']}
+                    modules={{
+                      toolbar: [[{ align: [] }], ['bold'], [{ indent: '-1' }, { indent: '+1' }]],
+                    }}
+                    placeholder="请填写你的工作描述"
+                    value={content || ''}
+                    onChange={setContent}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <ul className="nav bg-light nav-light fixed-bottom nav-bottom border-top">
+        <div className="row text-center nav-row">
+          <button type="button" className="btn btn-primary nav-btn" onClick={handleSave}>
+            保存
           </button>
         </div>
       </ul>

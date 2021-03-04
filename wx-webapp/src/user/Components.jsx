@@ -74,7 +74,7 @@ export function JournalTabs({ category }) {
     <ul className="nav nav-tabs">
       <li className="nav-item">
         <a
-          className={`nav-link pl-2 pr-2 ${category === '浏览' && 'active'} `}
+          className={`nav-link pl-3 pr-3 ${category === '浏览' && 'active'} `}
           href="#我的/记录/浏览"
         >
           浏览
@@ -82,7 +82,7 @@ export function JournalTabs({ category }) {
       </li>
       <li className="nav-item">
         <a
-          className={`nav-link pl-2 pr-2 ${category === '登录' && 'active'} `}
+          className={`nav-link pl-3 pr-3 ${category === '登录' && 'active'} `}
           href="#我的/记录/登录"
         >
           登录
@@ -90,23 +90,23 @@ export function JournalTabs({ category }) {
       </li>
       <li className="nav-item">
         <a
-          className={`nav-link pl-2 pr-2 ${category === '编辑' && 'active'} `}
+          className={`nav-link pl-3 pr-3 ${category === '编辑' && 'active'} `}
           href="#我的/记录/编辑"
         >
           编辑
         </a>
       </li>
-      <li className="nav-item">
+      {/* <li className="nav-item">
         <a
           className={`nav-link pl-2 pr-2 ${category === '举报' && 'active'} `}
           href="#我的/记录/举报"
         >
           举报
         </a>
-      </li>
+      </li> */}
       <li className="nav-item">
         <a
-          className={`nav-link pl-2 pr-2 ${category === '反馈/投诉' && 'active'} `}
+          className={`nav-link pl-3 pr-3 ${category === '反馈/投诉' && 'active'} `}
           href="#我的/记录/投诉"
         >
           反馈/投诉

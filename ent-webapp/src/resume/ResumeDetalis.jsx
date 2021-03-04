@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import { useParams, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStar, faComment, faBan } from '@fortawesome/free-solid-svg-icons';
+import { faStar, faComment} from '@fortawesome/free-solid-svg-icons';
 
 import moment from 'moment';
 import { Modal, Modal1 } from '../components/Modal';
@@ -57,19 +57,19 @@ const ResumeDetalis = () => {
       fetch(`./api/enterprise/check/${_auth.enterprise_id}?uuid=${_auth.enterprise_uuid}`)
         .then((res) => res.json())
         .then((res) => {
-          if (res.message) {
-            window.alert(res.message);
+          if (res) {
+            setEntStatus(res);
           } else {
-            setEntStatus(res.content);
+            window.console.info("服务器错误");
           }
         });
       fetch(`./api/resume/${id}${search}&u_i=${_auth.id}&user_uuid=${_auth.uuid}`)
         .then((res) => res.json())
         .then((res) => {
-          if (res.content) {
-            setData(() => res.content);
+          if (res) {
+            setData(() => res);
           } else {
-            window.alert(res.message);
+            window.console.info("服务器错误");
           }
         });
       SearchFavorite({
@@ -244,14 +244,14 @@ const ResumeDetalis = () => {
           <FontAwesomeIcon icon={faComment} fixedWidth />
           邀请面试
         </button>
-        <button
+        {/* <button
           className="btn btn-light rounded-0 text-danger"
           onClick={() => setModalShow2(true)}
           type="button"
         >
           <FontAwesomeIcon icon={faBan} fixedWidth />
           举报
-        </button>
+        </button> */}
       </div>
     );
   };

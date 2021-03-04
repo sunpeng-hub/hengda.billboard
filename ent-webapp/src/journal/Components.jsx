@@ -28,7 +28,7 @@ export const Sidebar = ({ category }) => (
         <FontAwesomeIcon icon={faAngleRight} fixedWidth />
       </span>
     </a>
-    <a
+    {/* <a
       href="#记录/举报"
       className={`list-group-item list-group-item-action border-0 font-weight-bold ${
         category === '举报' && 'text-primary'
@@ -38,7 +38,7 @@ export const Sidebar = ({ category }) => (
       <span className="pull-right">
         <FontAwesomeIcon icon={faAngleRight} fixedWidth />
       </span>
-    </a>
+    </a> */}
     <a
       href="#记录/投诉"
       className={`list-group-item list-group-item-action border-0 font-weight-bold ${

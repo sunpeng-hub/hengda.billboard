@@ -36,7 +36,6 @@ const List = () => {
         });
     }
   }, []);
-
   const handleChange = (e) => {
     const { value, name } = e.target;
     setParam((prev) => ({ ...prev, [name]: value }));
@@ -58,8 +57,18 @@ const List = () => {
       });
   };
 
-  const refresh = () => {
-    console.info(list);
+  const refresh = (el) => {
+    fetch(`/api/job/${el}?option=refresh`, {
+      method: 'PUT',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({}),
+    }).then((res) => {
+      if (res.status !== 200) {
+        window.console.info('服务器错误');
+        return;
+      }
+      window.alert('刷新成功，您的岗位会更容易被求职者看到！');
+    });
   };
 
   return (
@@ -162,7 +171,7 @@ const List = () => {
                       <td>
                         <span
                           className="pull-right btn btn-link btn-lg"
-                          onClick={refresh}
+                          onClick={() => refresh(item.id)}
                         >
                           <FontAwesomeIcon icon={faSync} fixedWidth />
                           刷新

@@ -23,7 +23,7 @@ a {
   text-decoration: none;
 }
 
-.toback-line{
+.toback-line {
   border-right: 1px solid #323a40;
 }
 
@@ -239,7 +239,7 @@ a {
   -webkit-line-clamp: 12;
 }
 
-.intro-text{
+.intro-text {
   overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
